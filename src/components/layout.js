@@ -5,14 +5,17 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
+import React, { useEffect } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-
-import Header from "./header"
-import "./layout.css"
+import { ThemeProvider, CSSReset } from "@chakra-ui/core"
+import { Global, css } from "@emotion/core"
+import customTheme from "../assets/theme"
+import "typeface-montserrat"
+import "typeface-vollkorn"
 
 const Layout = ({ children }) => {
+
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -24,23 +27,18 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
-    </>
+    <ThemeProvider theme={customTheme}>
+      <CSSReset />
+      <Global
+        styles={css`
+          html {
+            background: #000;
+            color: white;
+          }
+        `}
+      />
+      {children}
+    </ThemeProvider>
   )
 }
 
